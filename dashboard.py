@@ -143,10 +143,16 @@ st.markdown("""
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv("Structural_ML_Combined_Dataset.csv")
-        df["Bay_Number"] = df["Plan_Size"].str.extract(r'(\d+)').astype(int)
-        df["Height_m"] = df["Storeys"] * 3
-        df["Aspect_Ratio"] = df["Height_m"] / df["Bay_Number"]
+        # Load the augmented data for the best trends view!
+        data_file = "Structural_ML_Combined_Dataset_Augmented.csv"
+        if not os.path.exists(data_file):
+            data_file = "Structural_ML_Combined_Dataset.csv"
+            
+        df = pd.read_csv(data_file)
+        if "Aspect_Ratio" not in df.columns:
+            df["Bay_Number"] = df["Plan_Size"].str.extract(r'(\d+)').astype(int)
+            df["Height_m"] = df["Storeys"] * 3
+            df["Aspect_Ratio"] = df["Height_m"] / df["Bay_Number"]
         return df
     except Exception:
         return None
