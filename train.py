@@ -12,7 +12,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Load original data
-df = pd.read_csv("Structural_ML_Combined_Dataset.csv")
+df = pd.read_csv("Data.csv")
 df["Bay_Number"] = df["Plan_Size"].str.extract(r'(\d+)').astype(int)
 
 # Target outputs
@@ -24,40 +24,16 @@ targets = [
     "Base_Shear_kN"
 ]
 
-# Features: Storeys, Bay_Number, Aspect_Ratio, Soil_Profile
-# We can create Aspect_Ratio as well
-df["Height_m"] = df["Storeys"] * 3
-df["Aspect_Ratio"] = df["Height_m"] / df["Bay_Number"]
-features = ["Storeys", "Bay_Number", "Aspect_Ratio", "Soil_Profile"]
+# Features: Storeys, Bay_Number, Soil_Profile
+features = ["Storeys", "Bay_Number", "Soil_Profile"]
 
-# Data Augmentation (adding noise to numeric features)
-np.random.seed(42)
-dfs = [df]
-for _ in range(200): # augment by 200x to have more data
-    aug_df = df.copy()
-    
-    # Add random noise to non-categorical inputs
-    for col in ["Storeys", "Bay_Number"]:
-        noise = np.random.normal(0, 0.5, size=len(aug_df))
-        aug_df[col] = np.clip(np.round(aug_df[col] + noise), 1, 60)
-    
-    aug_df["Height_m"] = aug_df["Storeys"] * 3
-    aug_df["Aspect_Ratio"] = aug_df["Height_m"] / aug_df["Bay_Number"]
-    
-    # Add noise to outputs
-    for col in targets:
-        noise = np.random.normal(0, 0.05 * aug_df[col].std(), size=len(aug_df))
-        aug_df[col] += noise
-    # retain soil profiles as they are to have stratified representation
-    
-    dfs.append(aug_df)
+# Do not calculate anything or augment data
+df_aug = df.copy()
 
-df_aug = pd.concat(dfs, ignore_index=True)
-print(f"Original shape: {df.shape}, Augmented shape: {df_aug.shape}")
-df_aug.to_csv("Structural_ML_Combined_Dataset_Augmented.csv", index=False)
+print(f"Training on purely raw dataset. Shape: {df_aug.shape}")
 
 # Preprocessing
-numerical_features = ["Storeys", "Bay_Number", "Aspect_Ratio"]
+numerical_features = ["Storeys", "Bay_Number"]
 categorical_features = ["Soil_Profile"]
 
 preprocessor = ColumnTransformer(

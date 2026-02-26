@@ -150,16 +150,9 @@ st.markdown("""
 @st.cache_data
 def load_data():
     try:
-        # Load the augmented data for the best trends view!
-        data_file = "Structural_ML_Combined_Dataset_Augmented.csv"
-        if not os.path.exists(data_file):
-            data_file = "Structural_ML_Combined_Dataset.csv"
-            
-        df = pd.read_csv(data_file)
-        if "Aspect_Ratio" not in df.columns:
+        df = pd.read_csv("Data.csv")
+        if "Bay_Number" not in df.columns:
             df["Bay_Number"] = df["Plan_Size"].str.extract(r'(\d+)').astype(int)
-            df["Height_m"] = df["Storeys"] * 3
-            df["Aspect_Ratio"] = df["Height_m"] / df["Bay_Number"]
         return df
     except Exception:
         return None
@@ -295,12 +288,7 @@ elif mode == "AI Prediction Tool":
                 bay = st.number_input("Bay Number", 1, 30, 6, help="E.g., 6 bays")
             with input_col3:
                 soil = st.selectbox("Soil Profile", df["Soil_Profile"].unique())
-            
-            height = storeys * 3
-            aspect_ratio = height / bay
-            
-            st.markdown(f"<div class='info-box'>📐 <b>Calculated Aspect Ratio (h/b):</b> {round(aspect_ratio,2)} &nbsp;&nbsp;|&nbsp;&nbsp; <b>Est. Height:</b> {height}m</div>", unsafe_allow_html=True)
-            
+            st.markdown(f"<div class='info-box'>📐 <b>Selected Configuration:</b> {bay} Bays, {storeys} Storeys | <b>Soil:</b> {soil}</div>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         predict_btn = st.button("🚀 Generate Structural Prediction")
         
@@ -314,7 +302,6 @@ elif mode == "AI Prediction Tool":
                 input_df = pd.DataFrame({
                     "Storeys": [clipped_storeys],
                     "Bay_Number": [clipped_bay],
-                    "Aspect_Ratio": [height/clipped_bay],
                     "Soil_Profile": [soil]
                 })
 
@@ -322,23 +309,7 @@ elif mode == "AI Prediction Tool":
                 for target, model in trained_models.items():
                     preds[target] = model.predict(input_df)[0]
 
-                # Physics-based extrapolation if exceeding training bounds
-                extrapolated = False
-                if storeys > max_storeys:
-                    extrapolated = True
-                    height_ratio = storeys / max_storeys
-                    span_ratio = bay / max_bay
-                    area_ratio = (bay**2) / (max_bay**2)
-
-                    preds["Roof_Displacement_mm"] *= height_ratio**3
-                    preds["Storey_Drift_mm"] *= height_ratio
-                    preds["Column_Axial_Force_kN"] *= height_ratio
-                    preds["Base_Shear_kN"] *= area_ratio * height_ratio
-                    preds["Beam_Bending_Moment_kNm"] *= span_ratio**2
-
                 st.markdown("### 📊 Prediction Dashboard")
-                if extrapolated:
-                    st.warning("⚠️ Note: Storeys exceed training data range. Physics-based extrapolation applied to predictions.")
                 
                 # Highlight drift limits
                 drift_limit = (3/250)*1000  # Based on IS 1893 (approx)
