@@ -27,90 +27,97 @@ st.markdown("""
     }
     
     .stApp {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        color: #f8fafc;
+        background: linear-gradient(135deg, #090e17 0%, #111827 100%);
+        color: #f3f4f6;
     }
     
     /* Header styling */
     .main-header {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        padding: 2rem;
+        background: rgba(17, 24, 39, 0.4);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 2.5rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         text-align: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
     
     h1, h2, h3 {
-        color: #e2e8f0 !important;
+        color: #f9fafb !important;
     }
     
     .gradient-text {
-        background: linear-gradient(90deg, #38bdf8, #818cf8);
+        background: linear-gradient(120deg, #14b8a6, #3b82f6);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: 800;
-        font-size: 2.5rem;
+        font-size: 2.75rem;
+        letter-spacing: -0.5px;
     }
     
     .sub-text {
-        color: #94a3b8;
-        font-size: 1.1rem;
-        margin-top: 5px;
+        color: #9ca3af;
+        font-size: 1.15rem;
+        margin-top: 8px;
+        font-weight: 400;
     }
     
     .stSelectbox label, .stNumberInput label {
-        color: #cbd5e1 !important;
+        color: #d1d5db !important;
         font-weight: 600;
+        letter-spacing: 0.3px;
     }
     
     /* Metrics cards */
     [data-testid="stMetricValue"] {
-        color: #38bdf8 !important;
+        color: #14b8a6 !important;
         font-weight: 800;
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     [data-testid="stMetricLabel"] {
-        color: #94a3b8 !important;
-        font-size: 1rem;
+        color: #9ca3af !important;
+        font-size: 1.05rem;
         font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     [data-testid="stMetricDelta"] {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
     div[data-testid="metric-container"] {
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(30, 41, 59, 0.3);
         border: 1px solid rgba(255, 255, 255, 0.05);
-        padding: 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        padding: 1.75rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     div[data-testid="metric-container"]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        border-color: rgba(56, 189, 248, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        border-color: rgba(20, 184, 166, 0.5);
+        background: rgba(30, 41, 59, 0.5);
     }
     
     /* Button style */
     .stButton > button {
-        background: linear-gradient(90deg, #3b82f6, #6366f1);
+        background: linear-gradient(135deg, #0d9488, #2563eb);
         color: white;
         border: none;
-        border-radius: 8px;
-        padding: 0.75rem 2rem;
+        border-radius: 10px;
+        padding: 0.8rem 2.5rem;
         font-weight: 600;
-        letter-spacing: 0.025em;
+        font-size: 1.05rem;
+        letter-spacing: 0.5px;
         transition: all 0.3s ease;
         width: 100%;
-        box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
     }
     .stButton > button:hover {
-        background: linear-gradient(90deg, #60a5fa, #818cf8);
-        box-shadow: 0 6px 12px rgba(59, 130, 246, 0.4);
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, #14b8a6, #3b82f6);
+        box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        transform: translateY(-2px);
     }
     
     hr {
